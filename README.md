@@ -27,8 +27,7 @@ No manual updates required!
 ## 🧩 Example Screenshot
 
 *(Example output when RustDesk v1.4.2 is the latest release)*
-
-<img width="476" height="1144" alt="image" src="https://github.com/user-attachments/assets/4187910a-042d-42ef-b57c-88e9da2481ed" />
+<img width="718" height="1227" alt="image" src="https://github.com/user-attachments/assets/d122793d-5135-4ad2-aad5-11aa61fc7741" />
 
 
 ---

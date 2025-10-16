@@ -2,8 +2,7 @@
 
 A lightweight HTML + JavaScript snippet that automatically displays the **latest RustDesk release downloads** for all supported operating systems and architectures — directly from the [RustDesk GitHub releases](https://github.com/rustdesk/rustdesk/releases).
 
-This page stays **up to date automatically** with each new RustDesk version.  
-No manual updates required!
+This snippet **stays up to date automatically** with each new RustDesk version. No manual updates required!  
 
 ---
 
@@ -11,30 +10,52 @@ No manual updates required!
 
 ✅ Fetches the **latest release** info from the GitHub API  
 ✅ Dynamically lists **all download files** for:
-- 🪟 **Windows**
-- 🍎 **macOS**
-- 🐧 **Linux**
-- 🤖 **Android**
-- 📱 **iOS**
-- 📦 **Other (miscellaneous builds)**
 
-✅ Automatically updates when a new version is published  
+- Windows  
+- macOS  
+- Linux  
+- Android  
+- iOS  
+- Other (miscellaneous builds)  
+
+✅ Highlights downloads that **match the user’s OS and architecture** as "Recommended for you"  
+✅ Adds **friendly architecture labels** (e.g., 64-bit Intel, Apple Silicon M1/M2)  
+✅ Includes **macOS permission notes** and **iOS limitations**  
 ✅ Works in any **HTML page**, **WordPress Custom HTML block**, or **static site**  
-✅ Simple, modern layout with emojis and lightweight inline styling
+✅ Lightweight, modern layout  
 
 ---
 
-## 🧩 Example Screenshot
+## 💻 macOS and iOS Notes
 
-*(Example output when RustDesk v1.4.2 is the latest release)*
-<img width="718" height="1227" alt="image" src="https://github.com/user-attachments/assets/d122793d-5135-4ad2-aad5-11aa61fc7741" />
+- **macOS:** After installing RustDesk, enable the following for full functionality:
+  1. System Settings → Privacy & Security → Accessibility  
+  2. System Settings → Privacy & Security → Screen and System Audio Recording  
 
+- **iOS:** RustDesk allows you to connect to and control other devices, but **iOS devices cannot be controlled remotely** using RustDesk. The app is available on the App Store:  
+[RustDesk on the App Store](https://apps.apple.com/us/app/rustdesk-remote-desktop/id1581225015)  
+
+---
+
+## 🧩 Live Preview
+
+You can see the dynamic snippet in action below. It fetches the latest RustDesk release from GitHub:
+
+<div id="rustdesk-downloads-live" style="font-family: system-ui, sans-serif; max-width: 800px; margin: 20px auto; padding: 10px; border:1px solid #ccc; border-radius:8px;">
+  <h2 style="font-size: 1.5em; margin-bottom: 0.5em;">Live RustDesk Downloads</h2>
+  <p id="release-info-live">Fetching the latest release...</p>
+  <div id="downloads-live"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/CreareGuru/rustdesk_download@main/rustdesk-download.js"></script>
+
+> The snippet automatically populates all OS sections with the latest release files.
 
 ---
 
 ## 💻 Installation / Usage
 
-Copy and paste this code snippet into any webpage where you want to show the downloads:
+Copy and paste this snippet into your webpage:
 
 ```html
 <section id="rustdesk-downloads" style="font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px;">
@@ -43,128 +64,47 @@ Copy and paste this code snippet into any webpage where you want to show the dow
   <div id="downloads"></div>
 </section>
 
-<script>
-(async () => {
-  const info = document.getElementById('release-info');
-  const container = document.getElementById('downloads');
-
-  const osGroups = {
-    Windows: [],
-    macOS: [],
-    Linux: [],
-    Android: [],
-    iOS: [],
-    Other: []
-  };
-
-  try {
-    const res = await fetch('https://api.github.com/repos/rustdesk/rustdesk/releases/latest');
-    const data = await res.json();
-    info.textContent = `Latest version: ${data.tag_name}`;
-
-    data.assets.forEach(asset => {
-      const name = asset.name.toLowerCase();
-      const url = asset.browser_download_url;
-
-      if (name.includes('.exe') || name.includes('.msi')) osGroups.Windows.push({ name, url });
-      else if (name.includes('.dmg')) osGroups.macOS.push({ name, url });
-      else if (name.includes('.deb') || name.includes('.rpm') || name.includes('.appimage') || name.includes('.flatpak') || name.includes('.tar')) osGroups.Linux.push({ name, url });
-      else if (name.includes('.apk')) osGroups.Android.push({ name, url });
-      else if (name.includes('ios')) osGroups.iOS.push({ name, url });
-      else osGroups.Other.push({ name, url });
-    });
-
-    for (const [os, files] of Object.entries(osGroups)) {
-  if (files.length === 0) continue;
-
-  const section = document.createElement('div');
-  section.style.marginBottom = '1.5em';
-
-  const icon = {
-    Windows: '🪟',
-    macOS: '🍎',
-    Linux: '🐧',
-    Android: '🤖',
-    iOS: '📱',
-    Other: '📦'
-  }[os];
-
-  section.innerHTML = `<h3 style="margin: 0.5em 0;">${icon} ${os}</h3>`;
-
-  const list = document.createElement('ul');
-  list.style.listStyle = 'none';
-  list.style.padding = '0';
-
-  files.forEach(file => {
-  const li = document.createElement('li');
-  li.style.margin = '0.25em 0';
-
-  // Friendly architecture/variant labels
-  let archLabel = '';
-  if (file.name.includes('x86_64')) archLabel = '64-bit Intel';
-  else if (file.name.includes('x86-sciter')) archLabel = '32-bit Intel';
-  else if (file.name.includes('aarch64')) archLabel = os === 'macOS' ? 'Apple Silicon (M1/M2)' : '64-bit ARM';
-  else if (file.name.includes('armv7')) archLabel = '32-bit ARM';
-  else if (file.name.includes('universal')) archLabel = 'Universal';
-
-  li.innerHTML = `
-    <a href="${file.url}" target="_blank" style="
-      text-decoration: none;
-      color: #0073aa;
-      font-weight: 500;
-    ">${file.name}</a> ${archLabel ? `<span style="color:#555;">(${archLabel})</span>` : ''}
-  `;
-  list.appendChild(li);
-});
-
-
-  section.appendChild(list);
-
-  // Add macOS note about permissions
-  if (os === 'macOS') {
-    const note = document.createElement('p');
-    note.style.fontSize = '0.9em';
-    note.style.color = '#555';
-    note.style.marginTop = '0.5em';
-    note.textContent = 'Note: After installing RustDesk on macOS, you may need to enable Accessibility and Screen Recording permissions in System Settings → Privacy & Security for full functionality.';
-    section.appendChild(note);
-  }
-
-  container.appendChild(section);
-}
-
-  } catch (err) {
-    console.error(err);
-    info.textContent = '⚠️ Failed to fetch the latest release information.';
-  }
-})();
-</script>
+<script src="https://cdn.jsdelivr.net/gh/CreareGuru/rustdesk_download@main/rustdesk-download.js"></script>
 ```
+Any updates pushed to rustdesk-download.js on GitHub automatically reflect on your site via jsDelivr.
 
-## 🧠 How It Works
+🧠 How It Works
 
-- The script uses the GitHub REST API endpoint:
+Uses GitHub REST API:
 https://api.github.com/repos/rustdesk/rustdesk/releases/latest
 
-- It reads all the downloadable assets in the latest release.
+Reads all downloadable assets in the latest release
 
-- It groups them by operating system based on filename patterns.
+Groups files by OS and architecture
 
-- It dynamically builds and displays a list of links to those files.
+Adds labels and highlights recommended downloads
 
-## 🧱 Integration Tips
+Renders macOS permission notes and iOS limitations dynamically
 
-- Works with WordPress, static HTML, or custom CMS pages.
+🧱 Integration Tips
 
-- Can be styled with your site’s CSS for a seamless look.
+Works in WordPress, static HTML, or any CMS
 
-- Optional: Cache the API response on your backend if you expect heavy traffic (GitHub API has rate limits for anonymous requests).
+Styling can be adjusted with CSS for a seamless look
 
-## 📜 License
+Optional caching recommended if your site has heavy traffic (GitHub API rate limits anonymous requests)
 
-- This snippet is open-source under the MIT License
+📜 License
 
-## 💡 Author
+MIT License
+
+💡 Author
 
 Built with ❤️ by Wynand Nel / Creare.Guru
 
+
+---
+
+### ✅ How to Use This on GitHub Pages / Your Site
+
+1. Save this as `README.md` in your repo.  
+2. Ensure `rustdesk-download.js` is in the repository root.  
+3. Access the script via jsDelivr:  
+
+
+https://cdn.jsdelivr.net/gh/CreareGuru/rustdesk_download@main/rustdesk-download.js

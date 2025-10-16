@@ -63,7 +63,7 @@ Copy and paste this snippet into your webpage:
 ```
 Any updates pushed to rustdesk-download.js on GitHub automatically reflect on your site via jsDelivr.
 
-🧠 How It Works
+## 🧠 How It Works
 
 Uses GitHub REST API:
 https://api.github.com/repos/rustdesk/rustdesk/releases/latest
@@ -76,7 +76,7 @@ Adds labels and highlights recommended downloads
 
 Renders macOS permission notes and iOS limitations dynamically
 
-🧱 Integration Tips
+## 🧱 Integration Tips
 
 Works in WordPress, static HTML, or any CMS
 
@@ -84,22 +84,13 @@ Styling can be adjusted with CSS for a seamless look
 
 Optional caching recommended if your site has heavy traffic (GitHub API rate limits anonymous requests)
 
-📜 License
+## 📜 License
 
 MIT License
 
-💡 Author
+## 💡 Author
 
 Built with ❤️ by Wynand Nel / Creare.Guru
 
 
 ---
-
-### ✅ How to Use This on GitHub Pages / Your Site
-
-1. Save this as `README.md` in your repo.  
-2. Ensure `rustdesk-download.js` is in the repository root.  
-3. Access the script via jsDelivr:  
-
-
-https://cdn.jsdelivr.net/gh/CreareGuru/rustdesk_download@main/rustdesk-download.js

@@ -41,13 +41,8 @@ This snippet **stays up to date automatically** with each new RustDesk version. 
 
 You can see the dynamic snippet in action below. It fetches the latest RustDesk release from GitHub:
 
-<div id="rustdesk-downloads-live" style="font-family: system-ui, sans-serif; max-width: 800px; margin: 20px auto; padding: 10px; border:1px solid #ccc; border-radius:8px;">
-  <h2 style="font-size: 1.5em; margin-bottom: 0.5em;">Live RustDesk Downloads</h2>
-  <p id="release-info-live">Fetching the latest release...</p>
-  <div id="downloads-live"></div>
-</div>
+[View live demo](https://CreareGuru.github.io/rustdesk_download/demo.html)
 
-<script src="https://cdn.jsdelivr.net/gh/CreareGuru/rustdesk_download@main/rustdesk-download.js"></script>
 
 > The snippet automatically populates all OS sections with the latest release files.
 

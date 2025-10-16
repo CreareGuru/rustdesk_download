@@ -36,8 +36,7 @@
     const res = await fetch('https://api.github.com/repos/rustdesk/rustdesk/releases/latest');
     const data = await res.json();
 
-    // Clear "Fetching..." immediately
-    info.textContent = '';
+    info.textContent = ''; // Clear "Fetching..."
 
     // Populate OS groups
     data.assets.forEach(asset => {
@@ -80,8 +79,8 @@
         else if (file.name.includes('aarch64')) archLabel = os === 'macOS' ? 'Apple Silicon (M1/M2)' : '64-bit ARM';
         else if (file.name.includes('armv7')) archLabel = '32-bit ARM';
         else if (file.name.includes('universal')) archLabel = 'Universal';
+        else if (os === 'macOS' && file.name.endsWith('.dmg')) archLabel = 'Universal'; // Treat .dmg without arch as Universal
 
-        // Mark recommended if matches userOS and either exact arch or universal
         const isRecommended = os === userOS && (archLabel === userArch || archLabel === 'Universal');
 
         li.innerHTML = `

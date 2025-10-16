@@ -76,41 +76,64 @@ Copy and paste this code snippet into any webpage where you want to show the dow
     });
 
     for (const [os, files] of Object.entries(osGroups)) {
-      if (files.length === 0) continue;
+  if (files.length === 0) continue;
 
-      const section = document.createElement('div');
-      section.style.marginBottom = '1.5em';
+  const section = document.createElement('div');
+  section.style.marginBottom = '1.5em';
 
-      const icon = {
-        Windows: '🪟',
-        macOS: '🍎',
-        Linux: '🐧',
-        Android: '🤖',
-        iOS: '📱',
-        Other: '📦'
-      }[os];
+  const icon = {
+    Windows: '🪟',
+    macOS: '🍎',
+    Linux: '🐧',
+    Android: '🤖',
+    iOS: '📱',
+    Other: '📦'
+  }[os];
 
-      section.innerHTML = `<h3 style="margin: 0.5em 0;">${icon} ${os}</h3>`;
-      const list = document.createElement('ul');
-      list.style.listStyle = 'none';
-      list.style.padding = '0';
+  section.innerHTML = `<h3 style="margin: 0.5em 0;">${icon} ${os}</h3>`;
 
-      files.forEach(file => {
-        const li = document.createElement('li');
-        li.style.margin = '0.25em 0';
-        li.innerHTML = `
-          <a href="${file.url}" target="_blank" style="
-            text-decoration: none;
-            color: #0073aa;
-            font-weight: 500;
-          ">${file.name}</a>
-        `;
-        list.appendChild(li);
-      });
+  const list = document.createElement('ul');
+  list.style.listStyle = 'none';
+  list.style.padding = '0';
 
-      section.appendChild(list);
-      container.appendChild(section);
-    }
+  files.forEach(file => {
+  const li = document.createElement('li');
+  li.style.margin = '0.25em 0';
+
+  // Friendly architecture/variant labels
+  let archLabel = '';
+  if (file.name.includes('x86_64')) archLabel = '64-bit Intel';
+  else if (file.name.includes('x86-sciter')) archLabel = '32-bit Intel';
+  else if (file.name.includes('aarch64')) archLabel = os === 'macOS' ? 'Apple Silicon (M1/M2)' : '64-bit ARM';
+  else if (file.name.includes('armv7')) archLabel = '32-bit ARM';
+  else if (file.name.includes('universal')) archLabel = 'Universal';
+
+  li.innerHTML = `
+    <a href="${file.url}" target="_blank" style="
+      text-decoration: none;
+      color: #0073aa;
+      font-weight: 500;
+    ">${file.name}</a> ${archLabel ? `<span style="color:#555;">(${archLabel})</span>` : ''}
+  `;
+  list.appendChild(li);
+});
+
+
+  section.appendChild(list);
+
+  // Add macOS note about permissions
+  if (os === 'macOS') {
+    const note = document.createElement('p');
+    note.style.fontSize = '0.9em';
+    note.style.color = '#555';
+    note.style.marginTop = '0.5em';
+    note.textContent = 'Note: After installing RustDesk on macOS, you may need to enable Accessibility and Screen Recording permissions in System Settings → Privacy & Security for full functionality.';
+    section.appendChild(note);
+  }
+
+  container.appendChild(section);
+}
+
   } catch (err) {
     console.error(err);
     info.textContent = '⚠️ Failed to fetch the latest release information.';

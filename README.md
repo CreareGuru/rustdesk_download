@@ -6,6 +6,14 @@ This snippet **stays up to date automatically** with each new RustDesk version. 
 
 ---
 
+## 🧩 Preview
+
+<img width="793" height="1453" alt="image" src="https://github.com/user-attachments/assets/f67e1677-da67-4713-a14a-6542b27eef3c" />
+
+> The snippet automatically populates all OS sections with the latest release files.
+
+---
+
 ## ✨ Features
 
 ✅ Fetches the **latest release** info from the GitHub API  
@@ -37,17 +45,6 @@ This snippet **stays up to date automatically** with each new RustDesk version. 
 
 ---
 
-## 🧩 Live Preview
-
-You can see the dynamic snippet in action below. It fetches the latest RustDesk release from GitHub:
-
-[View live demo](https://CreareGuru.github.io/rustdesk_download/demo.html)
-
-
-> The snippet automatically populates all OS sections with the latest release files.
-
----
-
 ## 💻 Installation / Usage
 
 Copy and paste this snippet into your webpage:
@@ -63,6 +60,8 @@ Copy and paste this snippet into your webpage:
 ```
 Any updates pushed to rustdesk-download.js on GitHub automatically reflect on your site via jsDelivr.
 
+---
+
 ## 🧠 How It Works
 
 Uses GitHub REST API:
@@ -76,6 +75,8 @@ Adds labels and highlights recommended downloads
 
 Renders macOS permission notes and iOS limitations dynamically
 
+---
+
 ## 🧱 Integration Tips
 
 Works in WordPress, static HTML, or any CMS
@@ -84,13 +85,15 @@ Styling can be adjusted with CSS for a seamless look
 
 Optional caching recommended if your site has heavy traffic (GitHub API rate limits anonymous requests)
 
+---
+
 ## 📜 License
 
 MIT License
 
+---
+
 ## 💡 Author
 
 Built with ❤️ by Wynand Nel / Creare.Guru
-
-
 ---

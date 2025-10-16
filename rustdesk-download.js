@@ -22,13 +22,15 @@
   else if (userAgent.includes('android')) userOS = 'Android';
   else if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('ipod')) userOS = 'iOS';
 
-  let userArch = '';
-  if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
-    if (userOS === 'macOS') userArch = 'Apple Silicon (M1/M2)';
-    else userArch = '64-bit ARM';
-  } else if (userAgent.includes('x86_64') || userAgent.includes('win64') || userAgent.includes('amd64')) userArch = '64-bit Intel';
-  else if (userAgent.includes('x86') || userAgent.includes('i686')) userArch = '32-bit Intel';
-  else userArch = 'Universal';
+  let userArch = 'Universal'; // default for macOS
+  if (userOS === 'macOS') {
+    if (userAgent.includes('arm') || userAgent.includes('aarch64')) userArch = 'Apple Silicon (M1/M2)';
+    else if (userAgent.includes('x86_64')) userArch = '64-bit Intel';
+  } else {
+    if (userAgent.includes('arm') || userAgent.includes('aarch64')) userArch = '64-bit ARM';
+    else if (userAgent.includes('x86_64') || userAgent.includes('win64') || userAgent.includes('amd64')) userArch = '64-bit Intel';
+    else if (userAgent.includes('x86') || userAgent.includes('i686')) userArch = '32-bit Intel';
+  }
 
   try {
     const res = await fetch('https://api.github.com/repos/rustdesk/rustdesk/releases/latest');
@@ -79,7 +81,8 @@
         else if (file.name.includes('armv7')) archLabel = '32-bit ARM';
         else if (file.name.includes('universal')) archLabel = 'Universal';
 
-        const isRecommended = os === userOS && archLabel === userArch;
+        // Mark recommended if matches userOS and either exact arch or universal
+        const isRecommended = os === userOS && (archLabel === userArch || archLabel === 'Universal');
 
         li.innerHTML = `
           <a href="${file.url}" target="_blank" style="text-decoration:none;color:#0073aa;font-weight:500; ${isRecommended ? 'background:#e0f7ff;padding:0.2em 0.4em;border-radius:4px;' : ''}">
